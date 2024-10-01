@@ -26,7 +26,12 @@ def draw_moving_boy():
     x = (1 - t)*boy_x + t*arrow_x
     y = (1 - t)*boy_y + t*arrow_y
 
-    boy.clip_draw(frame*100,100,100,100,x,y)
+    if arrow_x>=boy_x:
+        boy.clip_draw(frame*100, 100, 100, 100, x, y)
+    else:
+        boy.clip_composite_draw(frame*100, 100, 100, 100, 0, 'h', x, y, 100, 100)
+        pass
+
 
 def set_arrow_pos():
     global arrow_x, arrow_y
@@ -47,15 +52,12 @@ while running:
 
         draw_moving_boy()
 
-
-
-
         arrow.draw(arrow_x, arrow_y)
 
         update_canvas()
         handle_events()
         frame = (frame + 1) % 8
-        delay(0.05)
+        delay(0.01)
     boy_x,boy_y = arrow_x,arrow_y
     set_arrow_pos()
 
