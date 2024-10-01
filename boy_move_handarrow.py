@@ -18,10 +18,17 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 running = False
 
-def move_boy():
-    pass
+def draw_moving_boy():
+    global boy_x, boy_y, arrow_x, arrow_y, i, frame
 
-def set_arrow_dir():
+    t = i / 100
+
+    x = (1 - t)*boy_x + t*arrow_x
+    y = (1 - t)*boy_y + t*arrow_y
+
+    boy.clip_draw(frame*100,100,100,100,x,y)
+
+def set_arrow_pos():
     global arrow_x, arrow_y
     arrow_x,arrow_y = random.randrange(0,800+1),random.randrange(0,600+1)
 
@@ -34,19 +41,22 @@ arrow_y = random.randrange(0,600+1)
 frame = 0
 
 while running:
-    clear_canvas()
-    bg.draw(400, 300)
-    boy.clip_draw(frame*100,100,100,100,boy_x,boy_y)
-    arrow.draw(arrow_x,arrow_y)
+    for i in range(0, 100 + 1):
+        clear_canvas()
+        bg.draw(400, 300)
 
-    move_boy()
-    if boy_x == arrow_x and boy_y == arrow_y:
-        set_arrow_dir()
+        draw_moving_boy()
 
-    update_canvas()
-    handle_events()
-    frame = (frame + 1) % 8
-    delay(0.05)
 
+
+
+        arrow.draw(arrow_x, arrow_y)
+
+        update_canvas()
+        handle_events()
+        frame = (frame + 1) % 8
+        delay(0.05)
+    boy_x,boy_y = arrow_x,arrow_y
+    set_arrow_pos()
 
 close_canvas()
